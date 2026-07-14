@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Конвертер юзернеймов телеграм</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: none; /* Скрыто по умолчанию, пока идет проверка URL */
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        p {
+            font-size: 16px;
+            color: #e0e0e0;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        input {
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: none;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            box-shadow: 0 0 0 3px #54a0ff;
+        }
+
+        button {
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: none;
+            background-color: #248837;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #28a745;
+        }
+
+        .footer-text {
+            margin-top: 25px;
+            font-size: 12px;
+            color: #b0bec5;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="mainMenu">
+        <h1>Конвертер юзернеймов телеграм</h1>
+        <p>Передайте параметр <code>?username=qlegacy</code> в URL для автоматического перенаправления или введите его вручную ниже:</p>
+        
+        <div class="input-group">
+            <input type="text" id="usernameInput" placeholder="Введите юзернейм (например, qlegacy)">
+            <button onclick="redirectToTelegram()">Перейти</button>
+        </div>
+
+        <div class="footer-text">
+            Попробуйте добавить к адресу: <code>?username=qlegacy</code>
+        </div>
+    </div>
+
+    <script>
+        // Функция для проверки параметров URL при загрузке страницы
+        function checkUrlParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const username = urlParams.get('username');
+
+            // Если параметр username равен 'qlegacy', перенаправляем
+            if (username && username.toLowerCase() === 'qlegacy') {
+                window.location.href = 'https://telegram.me/qlegacy';
+            } else {
+                // Если параметра нет или он другой — показываем красивое меню
+                document.getElementById('mainMenu').style.display = 'block';
+            }
+        }
+
+        // Функция для ручного ввода в меню
+        function redirectToTelegram() {
+    let input = document.getElementById('usernameInput').value.trim();
+    
+    if (!input) {
+        alert('Пожалуйста, введите юзернейм или ссылку.');
+        return;
+    }
+
+    // 1. Если вставили полную ссылку, отрезаем всё до последнего слэша
+    if (input.includes('/')) {
+        input = input.split('/').pop();
+    }
+    
+    // 2. Если остался знак @ в начале (например, @quadlegacy), убираем его
+    if (input.startsWith('@')) {
+        input = input.substring(1);
+    }
+
+    // Очищаем от возможных остатков параметров (если скопировали ссылку вида t.me/name?start=123)
+    let username = input.split('?')[0];
+
+    if (username) {
+        window.location.href = `https://telegram.me/${username}`;
+    } else {
+        alert('Не удалось распознать юзернейм.');
+    }
+}
+
+
+        // Запуск проверки при загрузке
+        window.onload = checkUrlParams;
+    </script>
+</body>
+      </html>
+      
